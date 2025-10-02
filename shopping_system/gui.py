@@ -12,8 +12,8 @@ class ShoppingGUI:
         # 创建主窗口
         self.root = tk.Tk()
         self.root.title("商品购物推荐系统")
-        self.root.geometry("1000x700")
-        self.root.minsize(800, 600)
+        self.root.geometry("1200x800")
+        self.root.minsize(1000, 700)
 
         # 设置样式
         self.setup_styles()
@@ -22,13 +22,29 @@ class ShoppingGUI:
     def setup_styles(self):
         """设置界面样式"""
         style = ttk.Style()
+
+        # 配置不同大小的字体
+        self.font_large = ("Arial", 16, "bold")
+        self.font_medium = ("Arial", 12)
+        self.font_small = ("Arial", 10)
+
+        # 标题样式
         style.configure("Header.TFrame", background="#2c3e50")
-        style.configure("Header.TLabel", background="#2c3e50", foreground="white", font=("Arial", 16, "bold"))
+        style.configure("Header.TLabel", background="#2c3e50", foreground="white", font=self.font_large)
+
+        # 导航栏样式
         style.configure("Nav.TFrame", background="#34495e")
-        style.configure("Nav.TButton", font=("Arial", 10))
+        style.configure("Nav.TButton", font=self.font_medium)
+
+        # 卡片样式
         style.configure("Card.TFrame", relief="raised", borderwidth=1)
-        style.configure("Title.TLabel", font=("Arial", 14, "bold"))
-        style.configure("Price.TLabel", font=("Arial", 12, "bold"), foreground="#e74c3c")
+        style.configure("Title.TLabel", font=self.font_large)
+        style.configure("Price.TLabel", font=self.font_medium, foreground="#e74c3c")
+
+        # 表单元素样式
+        style.configure("Form.TLabel", font=self.font_medium)
+        style.configure("Form.TEntry", font=self.font_medium)
+        style.configure("Form.TButton", font=self.font_medium)
 
     def create_login_frame(self):
         """创建登录界面"""
@@ -39,53 +55,66 @@ class ShoppingGUI:
         main_frame.pack(fill="both", expand=True)
 
         # 标题区域
-        header_frame = ttk.Frame(main_frame, style="Header.TFrame", height=80)
+        header_frame = ttk.Frame(main_frame, style="Header.TFrame", height=100)
         header_frame.pack(fill="x")
         header_frame.pack_propagate(False)
 
-        ttk.Label(header_frame, text="商品购物推荐系统", style="Header.TLabel").pack(pady=25)
+        ttk.Label(header_frame, text="商品购物推荐系统", style="Header.TLabel").pack(pady=30)
 
         # 登录表单区域
         login_frame = ttk.Frame(main_frame)
-        login_frame.pack(expand=True)
+        login_frame.pack(expand=True, fill="both")
 
         # 登录卡片
-        card_frame = ttk.Frame(login_frame, style="Card.TFrame", padding="30")
-        card_frame.pack()
+        card_frame = ttk.Frame(login_frame, style="Card.TFrame", padding="40")
+        card_frame.pack(expand=True)
 
-        ttk.Label(card_frame, text="用户登录", font=("Arial", 18, "bold"), anchor="center").pack(pady=(0, 20))
+        ttk.Label(card_frame, text="用户登录", font=self.font_large, anchor="center").pack(pady=(0, 30))
 
-        # 用户名输入
-        ttk.Label(card_frame, text="用户名:", font=("Arial", 10)).pack(anchor="w", pady=(5, 0))
-        self.username_entry = ttk.Entry(card_frame, width=30, font=("Arial", 11))
-        self.username_entry.pack(pady=(0, 10))
+     # 用户名输入
+        username_frame = ttk.Frame(card_frame)
+        username_frame.pack(fill="x", pady=10)
+        ttk.Label(username_frame, text="用户名:", style="Form.TLabel").pack(anchor="w")
+        self.username_entry = ttk.Entry(username_frame, font=self.font_medium, width=35)
+        self.username_entry.pack(pady=(5, 0))
 
-        # 密码输入
-        ttk.Label(card_frame, text="密码:", font=("Arial", 10)).pack(anchor="w", pady=(5, 0))
-        self.password_entry = ttk.Entry(card_frame, width=30, show="*", font=("Arial", 11))
-        self.password_entry.pack(pady=(0, 15))
+    # 密码输入
+        password_frame = ttk.Frame(card_frame)
+        password_frame.pack(fill="x", pady=10)
+        ttk.Label(password_frame, text="密码:", style="Form.TLabel").pack(anchor="w")
+        self.password_entry = ttk.Entry(password_frame, show="*", font=self.font_medium, width=35)
+        self.password_entry.pack(pady=(5, 0))
 
         # 用户类型选择
-        ttk.Label(card_frame, text="用户类型:", font=("Arial", 10)).pack(anchor="w", pady=(5, 0))
+        type_frame = ttk.Frame(card_frame)
+        type_frame.pack(fill="x", pady=10)
+        ttk.Label(type_frame, text="用户类型:", style="Form.TLabel").pack(anchor="w")
+
         self.user_type_var = tk.StringVar(value="user")
-        user_frame = ttk.Frame(card_frame)
-        user_frame.pack(pady=(0, 20))
+        radio_frame = ttk.Frame(type_frame)
+        radio_frame.pack(pady=(5, 0))
 
-        ttk.Radiobutton(user_frame, text="用户", variable=self.user_type_var, value="user").pack(side="left",
-                                                                                                 padx=(0, 15))
-        ttk.Radiobutton(user_frame, text="商家", variable=self.user_type_var, value="merchant").pack(side="left",
-                                                                                                     padx=(0, 15))
-        ttk.Radiobutton(user_frame, text="管理员", variable=self.user_type_var, value="admin").pack(side="left")
+        ttk.Radiobutton(radio_frame, text="用户", variable=self.user_type_var, value="user",
+                    style="Form.TRadiobutton").pack(side="left", padx=(0, 20))
+        ttk.Radiobutton(radio_frame, text="商家", variable=self.user_type_var, value="merchant",
+                    style="Form.TRadiobutton").pack(side="left", padx=(0, 20))
+        ttk.Radiobutton(radio_frame, text="管理员", variable=self.user_type_var, value="admin",
+                    style="Form.TRadiobutton").pack(side="left")
 
-        # 按钮区域
+        # 按钮区域 - 修改为居中对齐
         button_frame = ttk.Frame(card_frame)
-        button_frame.pack(fill="x", pady=(10, 0))
+        button_frame.pack(fill="x", pady=(30, 0))
 
-        ttk.Button(button_frame, text="登录", command=self.login).pack(side="left", padx=(0, 10))
-        ttk.Button(button_frame, text="注册", command=self.show_register).pack(side="left")
+        # 创建一个内部框架用于居中按钮
+        buttons_container = ttk.Frame(button_frame)
+        buttons_container.pack(expand=True)
+
+        ttk.Button(buttons_container, text="登录", command=self.login, style="Form.TButton").pack(side="left", padx=(0, 15))
+        ttk.Button(buttons_container, text="注册", command=self.show_register, style="Form.TButton").pack(side="left")
 
         # 绑定回车键
         self.root.bind('<Return>', lambda event: self.login())
+
 
     def show_register(self):
         """显示注册界面"""
@@ -96,70 +125,83 @@ class ShoppingGUI:
         main_frame.pack(fill="both", expand=True)
 
         # 标题区域
-        header_frame = ttk.Frame(main_frame, style="Header.TFrame", height=80)
+        header_frame = ttk.Frame(main_frame, style="Header.TFrame", height=100)
         header_frame.pack(fill="x")
         header_frame.pack_propagate(False)
 
-        ttk.Label(header_frame, text="商品购物推荐系统", style="Header.TLabel").pack(pady=25)
+        ttk.Label(header_frame, text="商品购物推荐系统", style="Header.TLabel").pack(pady=30)
 
         # 注册表单区域
         register_frame = ttk.Frame(main_frame)
-        register_frame.pack(expand=True)
+        register_frame.pack(expand=True, fill="both")
 
         # 注册卡片
-        card_frame = ttk.Frame(register_frame, style="Card.TFrame", padding="30")
-        card_frame.pack()
+        card_frame = ttk.Frame(register_frame, style="Card.TFrame", padding="40")
+        card_frame.pack(expand=True)
 
-        ttk.Label(card_frame, text="用户注册", font=("Arial", 18, "bold"), anchor="center").pack(pady=(0, 20))
+        ttk.Label(card_frame, text="用户注册", font=self.font_large, anchor="center").pack(pady=(0, 30))
 
-        # 表单字段
-        fields_frame = ttk.Frame(card_frame)
-        fields_frame.pack()
+        # 表单字段容器
+        form_container = ttk.Frame(card_frame)
+        form_container.pack(fill="both", expand=True)
 
         # 用户名
-        ttk.Label(fields_frame, text="用户名:", font=("Arial", 10)).grid(row=0, column=0, sticky="w", pady=5)
-        reg_username = ttk.Entry(fields_frame, width=25, font=("Arial", 11))
-        reg_username.grid(row=0, column=1, padx=(10, 0), pady=5)
+        username_frame = ttk.Frame(form_container)
+        username_frame.pack(fill="x", pady=10)
+        ttk.Label(username_frame, text="用户名:", style="Form.TLabel").pack(anchor="w")
+        reg_username = ttk.Entry(username_frame, font=self.font_medium, width=35)
+        reg_username.pack(pady=(5, 0))
 
         # 密码
-        ttk.Label(fields_frame, text="密码:", font=("Arial", 10)).grid(row=1, column=0, sticky="w", pady=5)
-        reg_password = ttk.Entry(fields_frame, width=25, show="*", font=("Arial", 11))
-        reg_password.grid(row=1, column=1, padx=(10, 0), pady=5)
+        password_frame = ttk.Frame(form_container)
+        password_frame.pack(fill="x", pady=10)
+        ttk.Label(password_frame, text="密码:", style="Form.TLabel").pack(anchor="w")
+        reg_password = ttk.Entry(password_frame, show="*", font=self.font_medium, width=35)
+        reg_password.pack(pady=(5, 0))
 
         # 邮箱
-        ttk.Label(fields_frame, text="邮箱:", font=("Arial", 10)).grid(row=2, column=0, sticky="w", pady=5)
-        reg_email = ttk.Entry(fields_frame, width=25, font=("Arial", 11))
-        reg_email.grid(row=2, column=1, padx=(10, 0), pady=5)
+        email_frame = ttk.Frame(form_container)
+        email_frame.pack(fill="x", pady=10)
+        ttk.Label(email_frame, text="邮箱:", style="Form.TLabel").pack(anchor="w")
+        reg_email = ttk.Entry(email_frame, font=self.font_medium, width=35)
+        reg_email.pack(pady=(5, 0))
 
         # 商家信息（默认隐藏）
-        shop_frame = ttk.Frame(card_frame)
-        shop_frame.pack(pady=10)
+        shop_frame = ttk.Frame(form_container)
+        shop_frame.pack(fill="x", pady=10)
         shop_frame.pack_forget()  # 默认隐藏
 
-        ttk.Label(shop_frame, text="店铺名:", font=("Arial", 10)).grid(row=0, column=0, sticky="w", pady=5)
-        reg_shop_name = ttk.Entry(shop_frame, width=25, font=("Arial", 11))
-        reg_shop_name.grid(row=0, column=1, padx=(10, 0), pady=5)
+        shop_name_frame = ttk.Frame(shop_frame)
+        shop_name_frame.pack(fill="x", pady=5)
+        ttk.Label(shop_name_frame, text="店铺名:", style="Form.TLabel").pack(anchor="w")
+        reg_shop_name = ttk.Entry(shop_name_frame, font=self.font_medium, width=35)
+        reg_shop_name.pack(pady=(5, 0))
 
-        ttk.Label(shop_frame, text="联系方式:", font=("Arial", 10)).grid(row=1, column=0, sticky="w", pady=5)
-        reg_contact = ttk.Entry(shop_frame, width=25, font=("Arial", 11))
-        reg_contact.grid(row=1, column=1, padx=(10, 0), pady=5)
+        contact_frame = ttk.Frame(shop_frame)
+        contact_frame.pack(fill="x", pady=5)
+        ttk.Label(contact_frame, text="联系方式:", style="Form.TLabel").pack(anchor="w")
+        reg_contact = ttk.Entry(contact_frame, font=self.font_medium, width=35)
+        reg_contact.pack(pady=(5, 0))
 
         # 用户类型选择
-        ttk.Label(card_frame, text="用户类型:", font=("Arial", 10)).pack(anchor="w", pady=(15, 5))
+        type_frame = ttk.Frame(form_container)
+        type_frame.pack(fill="x", pady=10)
+        ttk.Label(type_frame, text="用户类型:", style="Form.TLabel").pack(anchor="w")
+
         reg_user_type = tk.StringVar(value="user")
-        type_frame = ttk.Frame(card_frame)
-        type_frame.pack(pady=(0, 15))
+        radio_frame = ttk.Frame(type_frame)
+        radio_frame.pack(pady=(5, 0))
 
         def on_user_type_change(*args):
             if reg_user_type.get() == "merchant":
-                shop_frame.pack(pady=10)
+                shop_frame.pack(fill="x", pady=10)
             else:
                 shop_frame.pack_forget()
 
         reg_user_type.trace("w", on_user_type_change)
 
-        ttk.Radiobutton(type_frame, text="用户", variable=reg_user_type, value="user").pack(side="left", padx=(0, 15))
-        ttk.Radiobutton(type_frame, text="商家", variable=reg_user_type, value="merchant").pack(side="left")
+        ttk.Radiobutton(radio_frame, text="用户", variable=reg_user_type, value="user").pack(side="left", padx=(0, 20))
+        ttk.Radiobutton(radio_frame, text="商家", variable=reg_user_type, value="merchant").pack(side="left")
 
         def register():
             username = reg_username.get()
@@ -185,10 +227,11 @@ class ShoppingGUI:
 
         # 按钮区域
         button_frame = ttk.Frame(card_frame)
-        button_frame.pack(fill="x", pady=(10, 0))
+        button_frame.pack(fill="x", pady=(30, 0))
 
-        ttk.Button(button_frame, text="注册", command=register).pack(side="left", padx=(0, 10))
-        ttk.Button(button_frame, text="返回登录", command=self.create_login_frame).pack(side="left")
+        ttk.Button(button_frame, text="注册", command=register, style="Form.TButton").pack(side="left", padx=(0, 15))
+        ttk.Button(button_frame, text="返回登录", command=self.create_login_frame, style="Form.TButton").pack(
+            side="left")
 
     def create_user_dashboard(self):
         """创建用户主界面"""
@@ -203,14 +246,14 @@ class ShoppingGUI:
 
         # 创建内容区域
         self.content_frame = ttk.Frame(main_frame)
-        self.content_frame.pack(fill="both", expand=True, padx=10, pady=10)
+        self.content_frame.pack(fill="both", expand=True, padx=20, pady=20)
 
         # 显示推荐商品
         self.show_recommendations()
 
     def create_user_navbar(self, parent):
         """创建用户导航栏"""
-        nav_frame = ttk.Frame(parent, style="Nav.TFrame", height=50)
+        nav_frame = ttk.Frame(parent, style="Nav.TFrame", height=60)
         nav_frame.pack(fill="x")
         nav_frame.pack_propagate(False)
 
@@ -219,11 +262,11 @@ class ShoppingGUI:
         left_frame.pack(side="left", fill="y")
 
         ttk.Button(left_frame, text="首页", style="Nav.TButton",
-                   command=self.show_recommendations).pack(side="left", padx=5, pady=10)
+                   command=self.show_recommendations).pack(side="left", padx=10, pady=15)
         ttk.Button(left_frame, text="商品浏览", style="Nav.TButton",
-                   command=self.browse_products).pack(side="left", padx=5, pady=10)
+                   command=self.browse_products).pack(side="left", padx=10, pady=15)
         ttk.Button(left_frame, text="搜索", style="Nav.TButton",
-                   command=self.search_products).pack(side="left", padx=5, pady=10)
+                   command=self.search_products).pack(side="left", padx=10, pady=15)
 
         # 右侧用户信息
         right_frame = ttk.Frame(nav_frame, style="Nav.TFrame")
@@ -231,13 +274,13 @@ class ShoppingGUI:
 
         ttk.Label(right_frame, text=f"欢迎, {self.current_user}!",
                   foreground="white", background="#34495e",
-                  font=("Arial", 10)).pack(side="left", padx=10, pady=15)
+                  font=self.font_medium).pack(side="left", padx=15, pady=20)
         ttk.Button(right_frame, text="购物车", style="Nav.TButton",
-                   command=self.view_cart).pack(side="left", padx=5, pady=10)
+                   command=self.view_cart).pack(side="left", padx=5, pady=15)
         ttk.Button(right_frame, text="我的订单", style="Nav.TButton",
-                   command=self.view_orders).pack(side="left", padx=5, pady=10)
+                   command=self.view_orders).pack(side="left", padx=5, pady=15)
         ttk.Button(right_frame, text="退出", style="Nav.TButton",
-                   command=self.logout).pack(side="left", padx=5, pady=10)
+                   command=self.logout).pack(side="left", padx=10, pady=15)
 
     def browse_products(self):
         """浏览商品"""
@@ -245,7 +288,7 @@ class ShoppingGUI:
 
         # 标题
         header_frame = ttk.Frame(self.content_frame)
-        header_frame.pack(fill="x", pady=(0, 15))
+        header_frame.pack(fill="x", pady=(0, 20))
         ttk.Label(header_frame, text="所有商品", style="Title.TLabel").pack(side="left")
 
         # 商品展示区域
@@ -287,36 +330,36 @@ class ShoppingGUI:
             col = i % cols
 
             # 商品卡片
-            card_frame = ttk.Frame(parent, style="Card.TFrame", padding="10")
-            card_frame.grid(row=row, column=col, padx=10, pady=10, sticky="nsew")
+            card_frame = ttk.Frame(parent, style="Card.TFrame", padding="15")
+            card_frame.grid(row=row, column=col, padx=15, pady=15, sticky="nsew")
 
             # 商品名称
             name_label = ttk.Label(card_frame, text=product["name"],
-                                   font=("Arial", 11, "bold"), wraplength=150)
-            name_label.pack(anchor="w", pady=(0, 5))
+                                   font=self.font_medium, wraplength=180)
+            name_label.pack(anchor="w", pady=(0, 10))
 
             # 商品价格
             price_label = ttk.Label(card_frame, text=f"¥{product['price']}",
                                     style="Price.TLabel")
-            price_label.pack(anchor="w", pady=(0, 5))
+            price_label.pack(anchor="w", pady=(0, 10))
 
             # 商品类别
             category_label = ttk.Label(card_frame, text=f"类别: {product['category']}",
-                                       font=("Arial", 9))
+                                       font=self.font_small)
             category_label.pack(anchor="w", pady=(0, 5))
 
             # 商家信息
             merchant_label = ttk.Label(card_frame, text=f"商家: {product['merchant']}",
-                                       font=("Arial", 9))
-            merchant_label.pack(anchor="w", pady=(0, 10))
+                                       font=self.font_small)
+            merchant_label.pack(anchor="w", pady=(0, 15))
 
             # 操作按钮
             button_frame = ttk.Frame(card_frame)
             button_frame.pack(fill="x")
 
-            ttk.Button(button_frame, text="查看详情", width=10,
-                       command=lambda p=product: self.show_product_detail(p)).pack(side="left", padx=(0, 5))
-            ttk.Button(button_frame, text="加入购物车", width=10,
+            ttk.Button(button_frame, text="查看详情", width=12,
+                       command=lambda p=product: self.show_product_detail(p)).pack(side="left", padx=(0, 10))
+            ttk.Button(button_frame, text="加入购物车", width=12,
                        command=lambda p=product: self.add_to_cart(p["product_id"])).pack(side="left")
 
         # 配置网格权重
@@ -328,42 +371,42 @@ class ShoppingGUI:
         # 创建详情窗口
         detail_window = tk.Toplevel(self.root)
         detail_window.title("商品详情")
-        detail_window.geometry("500x400")
-        detail_window.resizable(False, False)
+        detail_window.geometry("600x500")
+        detail_window.minsize(500, 400)
 
         # 主框架
-        main_frame = ttk.Frame(detail_window, padding="20")
+        main_frame = ttk.Frame(detail_window, padding="30")
         main_frame.pack(fill="both", expand=True)
 
         # 商品名称
         ttk.Label(main_frame, text=product["name"],
-                  font=("Arial", 16, "bold")).pack(pady=(0, 15))
+                  font=self.font_large).pack(pady=(0, 20))
 
         # 价格信息
         price_frame = ttk.Frame(main_frame)
-        price_frame.pack(fill="x", pady=(0, 15))
-        ttk.Label(price_frame, text="价格:", font=("Arial", 12)).pack(side="left")
+        price_frame.pack(fill="x", pady=(0, 20))
+        ttk.Label(price_frame, text="价格:", font=self.font_medium).pack(side="left")
         ttk.Label(price_frame, text=f"¥{product['price']}",
-                  style="Price.TLabel").pack(side="left", padx=(10, 0))
+                  style="Price.TLabel").pack(side="left", padx=(15, 0))
 
         # 其他信息
         info_frame = ttk.Frame(main_frame)
-        info_frame.pack(fill="x", pady=(0, 15))
+        info_frame.pack(fill="x", pady=(0, 20))
 
         ttk.Label(info_frame, text=f"类别: {product['category']}",
-                  font=("Arial", 11)).pack(anchor="w", pady=2)
+                  font=self.font_medium).pack(anchor="w", pady=5)
         ttk.Label(info_frame, text=f"商家: {product['merchant']}",
-                  font=("Arial", 11)).pack(anchor="w", pady=2)
+                  font=self.font_medium).pack(anchor="w", pady=5)
         ttk.Label(info_frame, text=f"库存: {product.get('stock', 0)}",
-                  font=("Arial", 11)).pack(anchor="w", pady=2)
+                  font=self.font_medium).pack(anchor="w", pady=5)
 
         # 商品描述
-        ttk.Label(main_frame, text="商品描述:", font=("Arial", 12, "bold")).pack(anchor="w", pady=(10, 5))
+        ttk.Label(main_frame, text="商品描述:", font=self.font_medium).pack(anchor="w", pady=(15, 10))
 
         desc_frame = ttk.Frame(main_frame)
-        desc_frame.pack(fill="both", expand=True, pady=(0, 15))
+        desc_frame.pack(fill="both", expand=True, pady=(0, 20))
 
-        desc_text = scrolledtext.ScrolledText(desc_frame, height=8, wrap=tk.WORD)
+        desc_text = scrolledtext.ScrolledText(desc_frame, height=10, wrap=tk.WORD, font=self.font_small)
         desc_text.insert("1.0", product.get("description", "暂无描述"))
         desc_text.config(state="disabled")
         desc_text.pack(fill="both", expand=True)
@@ -375,7 +418,7 @@ class ShoppingGUI:
         ttk.Button(button_frame, text="加入购物车",
                    command=lambda: [self.add_to_cart(product["product_id"]), detail_window.destroy()]).pack(side="left",
                                                                                                             padx=(0,
-                                                                                                                  10))
+                                                                                                                  15))
         ttk.Button(button_frame, text="关闭",
                    command=detail_window.destroy).pack(side="left")
 
@@ -392,13 +435,13 @@ class ShoppingGUI:
 
         # 标题
         header_frame = ttk.Frame(self.content_frame)
-        header_frame.pack(fill="x", pady=(0, 15))
+        header_frame.pack(fill="x", pady=(0, 20))
         ttk.Label(header_frame, text="我的购物车", style="Title.TLabel").pack(side="left")
 
         # 购物车内容
         cart_items = self.system.get_cart_items(self.current_user)
         if not cart_items:
-            ttk.Label(self.content_frame, text="购物车为空", font=("Arial", 12)).pack(pady=50)
+            ttk.Label(self.content_frame, text="购物车为空", font=self.font_medium).pack(pady=80)
             return
 
         # 创建表格
@@ -411,10 +454,10 @@ class ShoppingGUI:
         tree.heading("quantity", text="数量")
         tree.heading("total", text="小计")
 
-        tree.column("name", width=200)
-        tree.column("price", width=100, anchor="center")
-        tree.column("quantity", width=100, anchor="center")
-        tree.column("total", width=100, anchor="center")
+        tree.column("name", width=250)
+        tree.column("price", width=120, anchor="center")
+        tree.column("quantity", width=120, anchor="center")
+        tree.column("total", width=120, anchor="center")
 
         total_amount = 0
         for item in cart_items:
@@ -436,20 +479,20 @@ class ShoppingGUI:
 
         # 总计和操作按钮
         bottom_frame = ttk.Frame(self.content_frame)
-        bottom_frame.pack(fill="x", pady=15)
+        bottom_frame.pack(fill="x", pady=20)
 
         ttk.Label(bottom_frame, text=f"总计: ¥{total_amount}",
-                  font=("Arial", 14, "bold")).pack(side="left")
+                  font=self.font_large).pack(side="left")
 
         button_frame = ttk.Frame(bottom_frame)
         button_frame.pack(side="right")
 
         ttk.Button(button_frame, text="删除选中",
-                   command=lambda: self.remove_from_cart(tree)).pack(side="left", padx=5)
+                   command=lambda: self.remove_from_cart(tree)).pack(side="left", padx=10)
         ttk.Button(button_frame, text="清空购物车",
-                   command=self.clear_cart).pack(side="left", padx=5)
+                   command=self.clear_cart).pack(side="left", padx=10)
         ttk.Button(button_frame, text="立即购买",
-                   command=lambda: self.purchase_cart(total_amount)).pack(side="left", padx=5)
+                   command=lambda: self.purchase_cart(total_amount)).pack(side="left", padx=10)
 
     def remove_from_cart(self, tree):
         """从购物车删除"""
@@ -487,24 +530,24 @@ class ShoppingGUI:
 
         # 标题
         header_frame = ttk.Frame(self.content_frame)
-        header_frame.pack(fill="x", pady=(0, 15))
+        header_frame.pack(fill="x", pady=(0, 20))
         ttk.Label(header_frame, text="搜索商品", style="Title.TLabel").pack(side="left")
 
         # 搜索区域
         search_frame = ttk.Frame(self.content_frame)
-        search_frame.pack(fill="x", pady=(0, 20))
+        search_frame.pack(fill="x", pady=(0, 30))
 
-        ttk.Label(search_frame, text="关键词:").pack(side="left")
-        search_entry = ttk.Entry(search_frame, width=30)
-        search_entry.pack(side="left", padx=5)
+        ttk.Label(search_frame, text="关键词:", font=self.font_medium).pack(side="left")
+        search_entry = ttk.Entry(search_frame, width=35, font=self.font_medium)
+        search_entry.pack(side="left", padx=10)
 
-        ttk.Label(search_frame, text="类别:").pack(side="left", padx=(20, 5))
+        ttk.Label(search_frame, text="类别:", font=self.font_medium).pack(side="left", padx=(30, 10))
         category_var = tk.StringVar()
         categories = self.system.get_categories()
         category_combo = ttk.Combobox(search_frame, textvariable=category_var,
-                                      values=["所有"] + categories, width=15)
+                                      values=["所有"] + categories, width=20, font=self.font_medium)
         category_combo.set("所有")
-        category_combo.pack(side="left", padx=5)
+        category_combo.pack(side="left", padx=10)
 
         def perform_search():
             query = search_entry.get()
@@ -512,7 +555,7 @@ class ShoppingGUI:
             results = self.system.search_products(query, category)
             display_results(results)
 
-        ttk.Button(search_frame, text="搜索", command=perform_search).pack(side="left", padx=5)
+        ttk.Button(search_frame, text="搜索", command=perform_search, style="Form.TButton").pack(side="left", padx=15)
 
         # 结果显示区域
         self.results_container = ttk.Frame(self.content_frame)
@@ -525,7 +568,7 @@ class ShoppingGUI:
 
             if not products:
                 ttk.Label(self.results_container, text="未找到相关商品",
-                          font=("Arial", 12)).pack(pady=50)
+                          font=self.font_medium).pack(pady=80)
                 return
 
             # 创建商品网格
@@ -560,13 +603,13 @@ class ShoppingGUI:
 
         # 标题
         header_frame = ttk.Frame(self.content_frame)
-        header_frame.pack(fill="x", pady=(0, 15))
+        header_frame.pack(fill="x", pady=(0, 20))
         ttk.Label(header_frame, text="为您推荐", style="Title.TLabel").pack(side="left")
 
         # 获取推荐商品
         recommendations = self.system.get_recommendations(self.current_user)
         if not recommendations:
-            ttk.Label(self.content_frame, text="暂无推荐", font=("Arial", 12)).pack(pady=50)
+            ttk.Label(self.content_frame, text="暂无推荐", font=self.font_medium).pack(pady=80)
             return
 
         # 创建推荐商品网格
@@ -598,13 +641,13 @@ class ShoppingGUI:
 
         # 标题
         header_frame = ttk.Frame(self.content_frame)
-        header_frame.pack(fill="x", pady=(0, 15))
+        header_frame.pack(fill="x", pady=(0, 20))
         ttk.Label(header_frame, text="我的订单", style="Title.TLabel").pack(side="left")
 
         # 获取订单数据
         orders = self.system.get_user_orders(self.current_user)
         if not orders:
-            ttk.Label(self.content_frame, text="暂无订单", font=("Arial", 12)).pack(pady=50)
+            ttk.Label(self.content_frame, text="暂无订单", font=self.font_medium).pack(pady=80)
             return
 
         # 创建订单列表
@@ -627,33 +670,35 @@ class ShoppingGUI:
 
         # 显示订单
         for order in orders:
-            order_frame = ttk.Frame(scrollable_frame, style="Card.TFrame", padding="15")
-            order_frame.pack(fill="x", pady=5)
+            order_frame = ttk.Frame(scrollable_frame, style="Card.TFrame", padding="20")
+            order_frame.pack(fill="x", pady=10)
 
             # 订单头部信息
             header_frame = ttk.Frame(order_frame)
-            header_frame.pack(fill="x", pady=(0, 10))
+            header_frame.pack(fill="x", pady=(0, 15))
 
             ttk.Label(header_frame, text=f"订单号: {order['order_id']}",
-                      font=("Arial", 11, "bold")).pack(side="left")
+                      font=self.font_medium).pack(side="left")
             ttk.Label(header_frame, text=f"{order['order_time']}",
-                      font=("Arial", 10)).pack(side="right")
+                      font=self.font_small).pack(side="right")
 
             # 订单商品
             items_frame = ttk.Frame(order_frame)
-            items_frame.pack(fill="x", pady=(0, 10))
+            items_frame.pack(fill="x", pady=(0, 15))
 
             for item in order["items"]:
                 item_frame = ttk.Frame(items_frame)
-                item_frame.pack(fill="x", pady=2)
-                ttk.Label(item_frame, text=f"{item['name']} x{item['quantity']}").pack(side="left")
-                ttk.Label(item_frame, text=f"¥{item['price'] * item['quantity']}").pack(side="right")
+                item_frame.pack(fill="x", pady=5)
+                ttk.Label(item_frame, text=f"{item['name']} x{item['quantity']}",
+                          font=self.font_small).pack(side="left")
+                ttk.Label(item_frame, text=f"¥{item['price'] * item['quantity']}",
+                          font=self.font_small).pack(side="right")
 
             # 订单总额
             total_frame = ttk.Frame(order_frame)
-            total_frame.pack(fill="x", pady=(0, 10))
+            total_frame.pack(fill="x", pady=(0, 15))
             ttk.Label(total_frame, text=f"总计: ¥{order['total_amount']}",
-                      font=("Arial", 12, "bold")).pack(side="right")
+                      font=self.font_medium).pack(side="right")
 
             # 评价按钮
             if not order.get("reviewed", False):
@@ -667,13 +712,14 @@ class ShoppingGUI:
         """评价订单"""
         review_window = tk.Toplevel(self.root)
         review_window.title("商品评价")
-        review_window.geometry("500x400")
+        review_window.geometry("600x500")
+        review_window.minsize(500, 400)
 
         # 主框架
-        main_frame = ttk.Frame(review_window, padding="20")
+        main_frame = ttk.Frame(review_window, padding="30")
         main_frame.pack(fill="both", expand=True)
 
-        ttk.Label(main_frame, text="商品评价", font=("Arial", 16, "bold")).pack(pady=(0, 20))
+        ttk.Label(main_frame, text="商品评价", font=self.font_large).pack(pady=(0, 30))
 
         # 创建Canvas和滚动条用于评价表单
         canvas_frame = ttk.Frame(main_frame)
@@ -698,22 +744,22 @@ class ShoppingGUI:
 
         # 为每个商品创建评价表单
         for item in order["items"]:
-            item_frame = ttk.LabelFrame(scrollable_frame, text=item["name"], padding="15")
-            item_frame.pack(fill="x", pady=10)
+            item_frame = ttk.LabelFrame(scrollable_frame, text=item["name"], padding="20")
+            item_frame.pack(fill="x", pady=15)
 
             # 评分
             rating_frame = ttk.Frame(item_frame)
-            rating_frame.pack(fill="x", pady=5)
-            ttk.Label(rating_frame, text="评分:").pack(side="left")
+            rating_frame.pack(fill="x", pady=10)
+            ttk.Label(rating_frame, text="评分:", font=self.font_medium).pack(side="left")
             rating_var = tk.StringVar(value="5")
             rating_combo = ttk.Combobox(rating_frame, textvariable=rating_var,
                                         values=["1", "2", "3", "4", "5"],
-                                        state="readonly", width=5)
-            rating_combo.pack(side="left", padx=10)
+                                        state="readonly", width=8, font=self.font_medium)
+            rating_combo.pack(side="left", padx=15)
 
             # 评论
-            ttk.Label(item_frame, text="评论:").pack(anchor="w", pady=(10, 5))
-            review_text = scrolledtext.ScrolledText(item_frame, height=4, width=40)
+            ttk.Label(item_frame, text="评论:", font=self.font_medium).pack(anchor="w", pady=(15, 10))
+            review_text = scrolledtext.ScrolledText(item_frame, height=5, width=50, font=self.font_small)
             review_text.pack(fill="x", expand=True)
 
             review_controls.append({
@@ -748,7 +794,7 @@ class ShoppingGUI:
                 messagebox.showwarning("警告", "请至少填写一条评论！")
 
         # 提交按钮
-        ttk.Button(main_frame, text="提交评价", command=submit_review).pack(pady=20)
+        ttk.Button(main_frame, text="提交评价", command=submit_review, style="Form.TButton").pack(pady=30)
 
     def create_merchant_dashboard(self):
         """创建商家主界面"""
@@ -763,14 +809,14 @@ class ShoppingGUI:
 
         # 创建内容区域
         self.content_frame = ttk.Frame(main_frame)
-        self.content_frame.pack(fill="both", expand=True, padx=10, pady=10)
+        self.content_frame.pack(fill="both", expand=True, padx=20, pady=20)
 
         # 显示商家商品
         self.view_merchant_products()
 
     def create_merchant_navbar(self, parent):
         """创建商家导航栏"""
-        nav_frame = ttk.Frame(parent, style="Nav.TFrame", height=50)
+        nav_frame = ttk.Frame(parent, style="Nav.TFrame", height=60)
         nav_frame.pack(fill="x")
         nav_frame.pack_propagate(False)
 
@@ -779,11 +825,11 @@ class ShoppingGUI:
         left_frame.pack(side="left", fill="y")
 
         ttk.Button(left_frame, text="我的商品", style="Nav.TButton",
-                   command=self.view_merchant_products).pack(side="left", padx=5, pady=10)
+                   command=self.view_merchant_products).pack(side="left", padx=10, pady=15)
         ttk.Button(left_frame, text="申请上架", style="Nav.TButton",
-                   command=self.apply_product).pack(side="left", padx=5, pady=10)
+                   command=self.apply_product).pack(side="left", padx=10, pady=15)
         ttk.Button(left_frame, text="商品评价", style="Nav.TButton",
-                   command=self.view_product_reviews).pack(side="left", padx=5, pady=10)
+                   command=self.view_product_reviews).pack(side="left", padx=10, pady=15)
 
         # 右侧用户信息
         right_frame = ttk.Frame(nav_frame, style="Nav.TFrame")
@@ -792,54 +838,61 @@ class ShoppingGUI:
         merchant_info = self.system.get_merchant_info(self.current_user)
         ttk.Label(right_frame, text=f"欢迎, {merchant_info['shop_name']}!",
                   foreground="white", background="#34495e",
-                  font=("Arial", 10)).pack(side="left", padx=10, pady=15)
+                  font=self.font_medium).pack(side="left", padx=15, pady=20)
         ttk.Button(right_frame, text="退出", style="Nav.TButton",
-                   command=self.logout).pack(side="left", padx=5, pady=10)
+                   command=self.logout).pack(side="left", padx=10, pady=15)
 
     def apply_product(self):
         """申请上架商品"""
         apply_window = tk.Toplevel(self.root)
         apply_window.title("申请上架商品")
-        apply_window.geometry("600x500")
+        apply_window.geometry("700x600")
+        apply_window.minsize(600, 500)
 
         # 主框架
-        main_frame = ttk.Frame(apply_window, padding="20")
+        main_frame = ttk.Frame(apply_window, padding="30")
         main_frame.pack(fill="both", expand=True)
 
-        ttk.Label(main_frame, text="商品上架申请", font=("Arial", 16, "bold")).pack(pady=(0, 20))
+        ttk.Label(main_frame, text="商品上架申请", font=self.font_large).pack(pady=(0, 30))
 
         # 表单区域
         form_frame = ttk.Frame(main_frame)
         form_frame.pack(fill="both", expand=True)
 
         # 商品名称
-        ttk.Label(form_frame, text="商品名称:").grid(row=0, column=0, sticky="w", pady=5)
-        name_entry = ttk.Entry(form_frame, width=40)
-        name_entry.grid(row=0, column=1, sticky="ew", padx=10, pady=5)
+        name_frame = ttk.Frame(form_frame)
+        name_frame.pack(fill="x", pady=10)
+        ttk.Label(name_frame, text="商品名称:", font=self.font_medium).pack(anchor="w")
+        name_entry = ttk.Entry(name_frame, font=self.font_medium)
+        name_entry.pack(fill="x", pady=(5, 0))
 
         # 价格
-        ttk.Label(form_frame, text="价格:").grid(row=1, column=0, sticky="w", pady=5)
-        price_entry = ttk.Entry(form_frame, width=40)
-        price_entry.grid(row=1, column=1, sticky="ew", padx=10, pady=5)
+        price_frame = ttk.Frame(form_frame)
+        price_frame.pack(fill="x", pady=10)
+        ttk.Label(price_frame, text="价格:", font=self.font_medium).pack(anchor="w")
+        price_entry = ttk.Entry(price_frame, font=self.font_medium)
+        price_entry.pack(fill="x", pady=(5, 0))
 
         # 类别
-        ttk.Label(form_frame, text="类别:").grid(row=2, column=0, sticky="w", pady=5)
-        category_entry = ttk.Entry(form_frame, width=40)
-        category_entry.grid(row=2, column=1, sticky="ew", padx=10, pady=5)
+        category_frame = ttk.Frame(form_frame)
+        category_frame.pack(fill="x", pady=10)
+        ttk.Label(category_frame, text="类别:", font=self.font_medium).pack(anchor="w")
+        category_entry = ttk.Entry(category_frame, font=self.font_medium)
+        category_entry.pack(fill="x", pady=(5, 0))
 
         # 库存
-        ttk.Label(form_frame, text="库存:").grid(row=3, column=0, sticky="w", pady=5)
-        stock_entry = ttk.Entry(form_frame, width=40)
-        stock_entry.grid(row=3, column=1, sticky="ew", padx=10, pady=5)
+        stock_frame = ttk.Frame(form_frame)
+        stock_frame.pack(fill="x", pady=10)
+        ttk.Label(stock_frame, text="库存:", font=self.font_medium).pack(anchor="w")
+        stock_entry = ttk.Entry(stock_frame, font=self.font_medium)
+        stock_entry.pack(fill="x", pady=(5, 0))
 
         # 商品描述
-        ttk.Label(form_frame, text="商品描述:").grid(row=4, column=0, sticky="nw", pady=5)
-        desc_text = scrolledtext.ScrolledText(form_frame, height=8)
-        desc_text.grid(row=4, column=1, sticky="nsew", padx=10, pady=5)
-
-        # 配置网格权重
-        form_frame.columnconfigure(1, weight=1)
-        form_frame.rowconfigure(4, weight=1)
+        desc_frame = ttk.Frame(form_frame)
+        desc_frame.pack(fill="both", expand=True, pady=10)
+        ttk.Label(desc_frame, text="商品描述:", font=self.font_medium).pack(anchor="w")
+        desc_text = scrolledtext.ScrolledText(desc_frame, height=8, font=self.font_small)
+        desc_text.pack(fill="both", expand=True, pady=(5, 0))
 
         def submit_application():
             name = name_entry.get()
@@ -867,8 +920,8 @@ class ShoppingGUI:
 
         # 提交按钮
         button_frame = ttk.Frame(main_frame)
-        button_frame.pack(fill="x", pady=20)
-        ttk.Button(button_frame, text="提交申请", command=submit_application).pack(side="right")
+        button_frame.pack(fill="x", pady=30)
+        ttk.Button(button_frame, text="提交申请", command=submit_application, style="Form.TButton").pack(side="right")
 
     def view_merchant_products(self):
         """查看商家商品"""
@@ -876,13 +929,13 @@ class ShoppingGUI:
 
         # 标题
         header_frame = ttk.Frame(self.content_frame)
-        header_frame.pack(fill="x", pady=(0, 15))
+        header_frame.pack(fill="x", pady=(0, 20))
         ttk.Label(header_frame, text="我的商品", style="Title.TLabel").pack(side="left")
 
         # 获取商品数据
         products = self.system.get_merchant_products(self.current_user)
         if not products:
-            ttk.Label(self.content_frame, text="暂无商品", font=("Arial", 12)).pack(pady=50)
+            ttk.Label(self.content_frame, text="暂无商品", font=self.font_medium).pack(pady=80)
             return
 
         # 创建表格
@@ -897,11 +950,11 @@ class ShoppingGUI:
         tree.heading("stock", text="库存")
         tree.heading("status", text="状态")
 
-        tree.column("name", width=200)
-        tree.column("price", width=100, anchor="center")
-        tree.column("category", width=100, anchor="center")
-        tree.column("stock", width=80, anchor="center")
-        tree.column("status", width=100, anchor="center")
+        tree.column("name", width=250)
+        tree.column("price", width=120, anchor="center")
+        tree.column("category", width=120, anchor="center")
+        tree.column("stock", width=100, anchor="center")
+        tree.column("status", width=120, anchor="center")
 
         for product in products:
             status = "已上架" if product.get("approved", False) else "待审核"
@@ -926,13 +979,13 @@ class ShoppingGUI:
 
         # 标题
         header_frame = ttk.Frame(self.content_frame)
-        header_frame.pack(fill="x", pady=(0, 15))
+        header_frame.pack(fill="x", pady=(0, 20))
         ttk.Label(header_frame, text="商品评价", style="Title.TLabel").pack(side="left")
 
         # 获取评价数据
         reviews = self.system.get_merchant_reviews(self.current_user)
         if not reviews:
-            ttk.Label(self.content_frame, text="暂无评价", font=("Arial", 12)).pack(pady=50)
+            ttk.Label(self.content_frame, text="暂无评价", font=self.font_medium).pack(pady=80)
             return
 
         # 创建评价列表
@@ -955,24 +1008,24 @@ class ShoppingGUI:
 
         # 显示评价
         for review in reviews:
-            review_frame = ttk.Frame(scrollable_frame, style="Card.TFrame", padding="15")
-            review_frame.pack(fill="x", pady=5)
+            review_frame = ttk.Frame(scrollable_frame, style="Card.TFrame", padding="20")
+            review_frame.pack(fill="x", pady=10)
 
             # 商品名称
             ttk.Label(review_frame, text=f"商品: {review['product_name']}",
-                      font=("Arial", 11, "bold")).pack(anchor="w")
+                      font=self.font_medium).pack(anchor="w")
 
             # 评分
             rating_text = "★" * review['rating'] + "☆" * (5 - review['rating'])
-            ttk.Label(review_frame, text=f"评分: {rating_text}").pack(anchor="w", pady=2)
+            ttk.Label(review_frame, text=f"评分: {rating_text}", font=self.font_medium).pack(anchor="w", pady=5)
 
             # 评论内容
             ttk.Label(review_frame, text=f"评论: {review['comment']}",
-                      wraplength=500).pack(anchor="w", pady=2)
+                      wraplength=600, font=self.font_small).pack(anchor="w", pady=5)
 
             # 用户信息和时间
             ttk.Label(review_frame, text=f"用户: {review['user']} - {review['review_time']}",
-                      font=("Arial", 9)).pack(anchor="w", pady=2)
+                      font=self.font_small).pack(anchor="w", pady=5)
 
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
@@ -990,14 +1043,14 @@ class ShoppingGUI:
 
         # 创建内容区域
         self.content_frame = ttk.Frame(main_frame)
-        self.content_frame.pack(fill="both", expand=True, padx=10, pady=10)
+        self.content_frame.pack(fill="both", expand=True, padx=20, pady=20)
 
         # 显示待审核申请
         self.review_applications()
 
     def create_admin_navbar(self, parent):
         """创建管理员导航栏"""
-        nav_frame = ttk.Frame(parent, style="Nav.TFrame", height=50)
+        nav_frame = ttk.Frame(parent, style="Nav.TFrame", height=60)
         nav_frame.pack(fill="x")
         nav_frame.pack_propagate(False)
 
@@ -1006,11 +1059,11 @@ class ShoppingGUI:
         left_frame.pack(side="left", fill="y")
 
         ttk.Button(left_frame, text="审核申请", style="Nav.TButton",
-                   command=self.review_applications).pack(side="left", padx=5, pady=10)
+                   command=self.review_applications).pack(side="left", padx=10, pady=15)
         ttk.Button(left_frame, text="商品管理", style="Nav.TButton",
-                   command=self.admin_search_products).pack(side="left", padx=5, pady=10)
+                   command=self.admin_search_products).pack(side="left", padx=10, pady=15)
         ttk.Button(left_frame, text="评价管理", style="Nav.TButton",
-                   command=self.view_all_reviews).pack(side="left", padx=5, pady=10)
+                   command=self.view_all_reviews).pack(side="left", padx=10, pady=15)
 
         # 右侧用户信息
         right_frame = ttk.Frame(nav_frame, style="Nav.TFrame")
@@ -1018,9 +1071,9 @@ class ShoppingGUI:
 
         ttk.Label(right_frame, text="欢迎, 管理员!",
                   foreground="white", background="#34495e",
-                  font=("Arial", 10)).pack(side="left", padx=10, pady=15)
+                  font=self.font_medium).pack(side="left", padx=15, pady=20)
         ttk.Button(right_frame, text="退出", style="Nav.TButton",
-                   command=self.logout).pack(side="left", padx=5, pady=10)
+                   command=self.logout).pack(side="left", padx=10, pady=15)
 
     def review_applications(self):
         """审核上架申请"""
@@ -1028,13 +1081,13 @@ class ShoppingGUI:
 
         # 标题
         header_frame = ttk.Frame(self.content_frame)
-        header_frame.pack(fill="x", pady=(0, 15))
+        header_frame.pack(fill="x", pady=(0, 20))
         ttk.Label(header_frame, text="上架申请审核", style="Title.TLabel").pack(side="left")
 
         # 获取待审核申请
         applications = self.system.get_pending_applications()
         if not applications:
-            ttk.Label(self.content_frame, text="暂无待审核申请", font=("Arial", 12)).pack(pady=50)
+            ttk.Label(self.content_frame, text="暂无待审核申请", font=self.font_medium).pack(pady=80)
             return
 
         # 创建申请列表
@@ -1057,36 +1110,41 @@ class ShoppingGUI:
 
         # 显示申请
         for application in applications:
-            app_frame = ttk.Frame(scrollable_frame, style="Card.TFrame", padding="15")
-            app_frame.pack(fill="x", pady=5)
+            app_frame = ttk.Frame(scrollable_frame, style="Card.TFrame", padding="20")
+            app_frame.pack(fill="x", pady=10)
 
             # 申请ID和时间
             header_frame = ttk.Frame(app_frame)
-            header_frame.pack(fill="x", pady=(0, 10))
+            header_frame.pack(fill="x", pady=(0, 15))
 
             ttk.Label(header_frame, text=f"申请ID: {application['application_id']}",
-                      font=("Arial", 11, "bold")).pack(side="left")
+                      font=self.font_medium).pack(side="left")
             ttk.Label(header_frame, text=f"{application['apply_time']}",
-                      font=("Arial", 10)).pack(side="right")
+                      font=self.font_small).pack(side="right")
 
             # 申请信息
             info_frame = ttk.Frame(app_frame)
-            info_frame.pack(fill="x", pady=(0, 10))
+            info_frame.pack(fill="x", pady=(0, 15))
 
-            ttk.Label(info_frame, text=f"商家: {application['merchant']}").pack(anchor="w", pady=2)
-            ttk.Label(info_frame, text=f"商品名称: {application['product_name']}").pack(anchor="w", pady=2)
-            ttk.Label(info_frame, text=f"价格: ¥{application['price']}").pack(anchor="w", pady=2)
-            ttk.Label(info_frame, text=f"类别: {application['category']}").pack(anchor="w", pady=2)
-            ttk.Label(info_frame, text=f"库存: {application['stock']}").pack(anchor="w", pady=2)
+            ttk.Label(info_frame, text=f"商家: {application['merchant']}",
+                      font=self.font_small).pack(anchor="w", pady=3)
+            ttk.Label(info_frame, text=f"商品名称: {application['product_name']}",
+                      font=self.font_small).pack(anchor="w", pady=3)
+            ttk.Label(info_frame, text=f"价格: ¥{application['price']}",
+                      font=self.font_small).pack(anchor="w", pady=3)
+            ttk.Label(info_frame, text=f"类别: {application['category']}",
+                      font=self.font_small).pack(anchor="w", pady=3)
+            ttk.Label(info_frame, text=f"库存: {application['stock']}",
+                      font=self.font_small).pack(anchor="w", pady=3)
             ttk.Label(info_frame, text=f"描述: {application['description']}",
-                      wraplength=500).pack(anchor="w", pady=2)
+                      wraplength=600, font=self.font_small).pack(anchor="w", pady=3)
 
             # 审核按钮
             button_frame = ttk.Frame(app_frame)
             button_frame.pack(anchor="e")
 
             ttk.Button(button_frame, text="通过",
-                       command=lambda app=application: self.approve_application(app)).pack(side="left", padx=5)
+                       command=lambda app=application: self.approve_application(app)).pack(side="left", padx=10)
             ttk.Button(button_frame, text="拒绝",
                        command=lambda app=application: self.reject_application(app)).pack(side="left")
 
@@ -1115,23 +1173,23 @@ class ShoppingGUI:
 
         # 标题
         header_frame = ttk.Frame(self.content_frame)
-        header_frame.pack(fill="x", pady=(0, 15))
+        header_frame.pack(fill="x", pady=(0, 20))
         ttk.Label(header_frame, text="商品管理", style="Title.TLabel").pack(side="left")
 
         # 搜索区域
         search_frame = ttk.Frame(self.content_frame)
-        search_frame.pack(fill="x", pady=(0, 20))
+        search_frame.pack(fill="x", pady=(0, 30))
 
-        ttk.Label(search_frame, text="关键词:").pack(side="left")
-        search_entry = ttk.Entry(search_frame, width=30)
-        search_entry.pack(side="left", padx=5)
+        ttk.Label(search_frame, text="关键词:", font=self.font_medium).pack(side="left")
+        search_entry = ttk.Entry(search_frame, width=40, font=self.font_medium)
+        search_entry.pack(side="left", padx=10)
 
         def perform_search():
             query = search_entry.get()
             results = self.system.search_products(query)
             display_results(results)
 
-        ttk.Button(search_frame, text="搜索", command=perform_search).pack(side="left", padx=5)
+        ttk.Button(search_frame, text="搜索", command=perform_search, style="Form.TButton").pack(side="left", padx=15)
 
         # 结果显示区域
         self.results_container = ttk.Frame(self.content_frame)
@@ -1144,7 +1202,7 @@ class ShoppingGUI:
 
             if not products:
                 ttk.Label(self.results_container, text="未找到相关商品",
-                          font=("Arial", 12)).pack(pady=50)
+                          font=self.font_medium).pack(pady=80)
                 return
 
             # 创建表格
@@ -1159,11 +1217,11 @@ class ShoppingGUI:
             tree.heading("merchant", text="商家")
             tree.heading("status", text="状态")
 
-            tree.column("name", width=200)
-            tree.column("price", width=100, anchor="center")
-            tree.column("category", width=100, anchor="center")
-            tree.column("merchant", width=120, anchor="center")
-            tree.column("status", width=100, anchor="center")
+            tree.column("name", width=250)
+            tree.column("price", width=120, anchor="center")
+            tree.column("category", width=120, anchor="center")
+            tree.column("merchant", width=150, anchor="center")
+            tree.column("status", width=120, anchor="center")
 
             for product in products:
                 status = "已上架" if product.get("approved", False) else "待审核"
@@ -1191,13 +1249,13 @@ class ShoppingGUI:
 
         # 标题
         header_frame = ttk.Frame(self.content_frame)
-        header_frame.pack(fill="x", pady=(0, 15))
+        header_frame.pack(fill="x", pady=(0, 20))
         ttk.Label(header_frame, text="所有商品评价", style="Title.TLabel").pack(side="left")
 
         # 获取评价数据
         reviews = self.system.get_all_reviews()
         if not reviews:
-            ttk.Label(self.content_frame, text="暂无评价", font=("Arial", 12)).pack(pady=50)
+            ttk.Label(self.content_frame, text="暂无评价", font=self.font_medium).pack(pady=80)
             return
 
         # 创建评价列表
@@ -1220,28 +1278,28 @@ class ShoppingGUI:
 
         # 显示评价
         for review in reviews:
-            review_frame = ttk.Frame(scrollable_frame, style="Card.TFrame", padding="15")
-            review_frame.pack(fill="x", pady=5)
+            review_frame = ttk.Frame(scrollable_frame, style="Card.TFrame", padding="20")
+            review_frame.pack(fill="x", pady=10)
 
             # 商品名称和商家
             header_frame = ttk.Frame(review_frame)
-            header_frame.pack(fill="x", pady=(0, 5))
+            header_frame.pack(fill="x", pady=(0, 10))
             ttk.Label(header_frame, text=f"商品: {review['product_name']}",
-                      font=("Arial", 11, "bold")).pack(side="left")
+                      font=self.font_medium).pack(side="left")
             ttk.Label(header_frame, text=f"商家: {review['merchant']}",
-                      font=("Arial", 10)).pack(side="right")
+                      font=self.font_small).pack(side="right")
 
             # 评分
             rating_text = "★" * review['rating'] + "☆" * (5 - review['rating'])
-            ttk.Label(review_frame, text=f"评分: {rating_text}").pack(anchor="w", pady=2)
+            ttk.Label(review_frame, text=f"评分: {rating_text}", font=self.font_medium).pack(anchor="w", pady=5)
 
             # 评论内容
             ttk.Label(review_frame, text=f"评论: {review['comment']}",
-                      wraplength=500).pack(anchor="w", pady=2)
+                      wraplength=600, font=self.font_small).pack(anchor="w", pady=5)
 
             # 用户信息和时间
             ttk.Label(review_frame, text=f"用户: {review['user']} - {review['review_time']}",
-                      font=("Arial", 9)).pack(anchor="w", pady=2)
+                      font=self.font_small).pack(anchor="w", pady=5)
 
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
