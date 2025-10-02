@@ -1,0 +1,233 @@
+{
+  "users": {
+    "luckin": {
+      "username": "luckin",
+      "password": "123456",
+      "email": "3321173431@qq.com",
+      "cart": {},
+      "order_history": [
+        "6f9134a5"
+      ],
+      "preferences": [
+        "TCG"
+      ],
+      "view_history": []
+    },
+    "Lyrilusc": {
+      "username": "Lyrilusc",
+      "password": "123",
+      "email": "24jwhuang1@stu.edu.cn",
+      "cart": {},
+      "order_history": [
+        "d587841e"
+      ],
+      "preferences": [
+        "TCG",
+        "周边"
+      ],
+      "view_history": [
+        "1e9b2be2"
+      ]
+    }
+  },
+  "merchants": {
+    "evolto": {
+      "username": "evolto",
+      "password": "123456",
+      "shop_name": "源数O神",
+      "contact": "19195356816",
+      "products": [
+        "29986200",
+        "1e9b2be2",
+        "0ae45e8f",
+        "ee1931dd",
+        "4ca522a8"
+      ]
+    }
+  },
+  "admins": {
+    "admin": {
+      "password": "admin123",
+      "role": "admin"
+    }
+  },
+  "products": {
+    "29986200": {
+      "product_id": "29986200",
+      "name": "青眼白龙预组",
+      "price": 99.0,
+      "category": "TCG",
+      "merchant": "evolto",
+      "description": "青眼白龙预组是《游戏王》中的一套以\"青眼白龙\"为核心的预构建卡组，包含多张新卡和强大的组合策略。",
+      "stock": 1,
+      "approved": true,
+      "rating": 0.0,
+      "review_count": 0
+    },
+    "1e9b2be2": {
+      "product_id": "1e9b2be2",
+      "name": "元素英雄预组",
+      "price": 99.0,
+      "category": "TCG",
+      "merchant": "evolto",
+      "description": "游戏《游戏王卡片游戏》中的卡片系列\n元素－英雄，游戏《游戏王卡片游戏》中的卡片系列，属于\"－英雄\"系列。",
+      "stock": 2,
+      "approved": true,
+      "rating": 0.0,
+      "review_count": 0
+    },
+    "0ae45e8f": {
+      "product_id": "0ae45e8f",
+      "name": "枪王霍普预组",
+      "price": 119.0,
+      "category": "TCG",
+      "merchant": "evolto",
+      "description": "霍普是科乐美发行的集换式卡牌游戏《游戏王》中的卡组体系，出自动画《游戏王ZEXAL》并作为主角九十九游马的代表卡组，核心卡\"希望皇霍普\"为光属性战士族超量怪兽，收录于805等卡包。该系列以超量召唤为核心，通过叠放素材发动破坏、无效化等效果，并衍生出混沌、闪光、未来皇等数十种形态，形成4至10阶的超量网络。",
+      "stock": 1,
+      "approved": true,
+      "rating": 5.0,
+      "review_count": 1
+    },
+    "ee1931dd": {
+      "product_id": "ee1931dd",
+      "name": "马利克玩偶",
+      "price": 288.0,
+      "category": "周边",
+      "merchant": "evolto",
+      "description": "马利克·伊修达尔是日本漫画《游戏王》及其衍生作品中的角色，作为决斗城市篇的主要反派，身份为守墓一族末裔，持有三幻神之一的“拉之翼神龙”与千年锡杖，并创立古鲁斯组织以向法老王复仇。",
+      "stock": 6,
+      "approved": true,
+      "rating": 0.0,
+      "review_count": 0
+    },
+    "4ca522a8": {
+      "product_id": "4ca522a8",
+      "name": "霍普玩偶",
+      "price": 288.0,
+      "category": "周边",
+      "merchant": "evolto",
+      "description": "希望皇霍普，卡牌游戏《游戏王》中超量召唤机制的代表性怪兽卡系列，最早于2011年随卡包《EXTRA PACK Volume 3》登场。该系列核心卡“No.39 希望皇霍普”为光属性战士族超量怪兽，需两只4星怪兽叠放召唤，通过移除素材无效攻击，在无素材时被攻击会自毁。其在动画《游戏王ZEXAL》中作为主角九十九游马的王牌怪兽活跃。",
+      "stock": 8,
+      "approved": true,
+      "rating": 5.0,
+      "review_count": 1
+    }
+  },
+  "applications": [
+    {
+      "application_id": "c245bd9d",
+      "merchant": "evolto",
+      "product_name": "青眼白龙预组",
+      "price": 99.0,
+      "category": "TCG",
+      "stock": 1,
+      "description": "青眼白龙预组是《游戏王》中的一套以\"青眼白龙\"为核心的预构建卡组，包含多张新卡和强大的组合策略。",
+      "apply_time": "2025-10-01 18:35:00",
+      "status": "approved"
+    },
+    {
+      "application_id": "4b96f117",
+      "merchant": "evolto",
+      "product_name": "元素英雄预组",
+      "price": 99.0,
+      "category": "TCG",
+      "stock": 2,
+      "description": "游戏《游戏王卡片游戏》中的卡片系列\n元素－英雄，游戏《游戏王卡片游戏》中的卡片系列，属于\"－英雄\"系列。",
+      "apply_time": "2025-10-01 18:37:31",
+      "status": "approved"
+    },
+    {
+      "application_id": "bb815124",
+      "merchant": "evolto",
+      "product_name": "枪王霍普预组",
+      "price": 119.0,
+      "category": "TCG",
+      "stock": 1,
+      "description": "霍普是科乐美发行的集换式卡牌游戏《游戏王》中的卡组体系，出自动画《游戏王ZEXAL》并作为主角九十九游马的代表卡组，核心卡\"希望皇霍普\"为光属性战士族超量怪兽，收录于805等卡包。该系列以超量召唤为核心，通过叠放素材发动破坏、无效化等效果，并衍生出混沌、闪光、未来皇等数十种形态，形成4至10阶的超量网络。",
+      "apply_time": "2025-10-02 11:43:13",
+      "status": "approved"
+    },
+    {
+      "application_id": "031ce951",
+      "merchant": "evolto",
+      "product_name": "马利克玩偶",
+      "price": 288.0,
+      "category": "周边",
+      "stock": 6,
+      "description": "马利克·伊修达尔是日本漫画《游戏王》及其衍生作品中的角色，作为决斗城市篇的主要反派，身份为守墓一族末裔，持有三幻神之一的“拉之翼神龙”与千年锡杖，并创立古鲁斯组织以向法老王复仇。",
+      "apply_time": "2025-10-02 11:58:00",
+      "status": "approved"
+    },
+    {
+      "application_id": "2579504b",
+      "merchant": "evolto",
+      "product_name": "霍普玩偶",
+      "price": 288.0,
+      "category": "周边",
+      "stock": 8,
+      "description": "希望皇霍普，卡牌游戏《游戏王》中超量召唤机制的代表性怪兽卡系列，最早于2011年随卡包《EXTRA PACK Volume 3》登场。该系列核心卡“No.39 希望皇霍普”为光属性战士族超量怪兽，需两只4星怪兽叠放召唤，通过移除素材无效攻击，在无素材时被攻击会自毁。其在动画《游戏王ZEXAL》中作为主角九十九游马的王牌怪兽活跃。",
+      "apply_time": "2025-10-02 12:00:13",
+      "status": "approved"
+    }
+  ],
+  "orders": [
+    {
+      "order_id": "6f9134a5",
+      "user": "luckin",
+      "items": [
+        {
+          "product_id": "1e9b2be2",
+          "name": "元素英雄预组",
+          "price": 99.0,
+          "quantity": 1
+        }
+      ],
+      "total_amount": 99.0,
+      "order_time": "2025-10-01 18:38:25",
+      "reviewed": false
+    },
+    {
+      "order_id": "d587841e",
+      "user": "Lyrilusc",
+      "items": [
+        {
+          "product_id": "0ae45e8f",
+          "name": "枪王霍普预组",
+          "price": 119.0,
+          "quantity": 1
+        },
+        {
+          "product_id": "4ca522a8",
+          "name": "霍普玩偶",
+          "price": 288.0,
+          "quantity": 1
+        }
+      ],
+      "total_amount": 407.0,
+      "order_time": "2025-10-02 12:09:03",
+      "reviewed": true
+    }
+  ],
+  "reviews": [
+    {
+      "review_id": "0d03ebdc",
+      "user": "Lyrilusc",
+      "product_id": "0ae45e8f",
+      "product_name": "枪王霍普预组",
+      "merchant": "evolto",
+      "rating": 5,
+      "comment": "好喜欢",
+      "review_time": "2025-10-02 12:09:45"
+    },
+    {
+      "review_id": "10ec9c98",
+      "user": "Lyrilusc",
+      "product_id": "4ca522a8",
+      "product_name": "霍普玩偶",
+      "merchant": "evolto",
+      "rating": 5,
+      "comment": "非常好",
+      "review_time": "2025-10-02 12:09:45"
+    }
+  ]
+}
