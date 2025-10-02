@@ -24,7 +24,7 @@ class ShoppingGUI:
         style = ttk.Style()
 
         # 配置不同大小的字体
-        self.font_large = ("Arial", 16, "bold")
+        self.font_large = ("Arial", 18, "bold")
         self.font_medium = ("Arial", 12)
         self.font_small = ("Arial", 10)
 
@@ -71,14 +71,14 @@ class ShoppingGUI:
 
         ttk.Label(card_frame, text="用户登录", font=self.font_large, anchor="center").pack(pady=(0, 30))
 
-     # 用户名输入
+        # 用户名输入
         username_frame = ttk.Frame(card_frame)
         username_frame.pack(fill="x", pady=10)
         ttk.Label(username_frame, text="用户名:", style="Form.TLabel").pack(anchor="w")
         self.username_entry = ttk.Entry(username_frame, font=self.font_medium, width=35)
         self.username_entry.pack(pady=(5, 0))
 
-    # 密码输入
+        # 密码输入
         password_frame = ttk.Frame(card_frame)
         password_frame.pack(fill="x", pady=10)
         ttk.Label(password_frame, text="密码:", style="Form.TLabel").pack(anchor="w")
@@ -95,11 +95,11 @@ class ShoppingGUI:
         radio_frame.pack(pady=(5, 0))
 
         ttk.Radiobutton(radio_frame, text="用户", variable=self.user_type_var, value="user",
-                    style="Form.TRadiobutton").pack(side="left", padx=(0, 20))
+                        style="Form.TRadiobutton").pack(side="left", padx=(0, 20))
         ttk.Radiobutton(radio_frame, text="商家", variable=self.user_type_var, value="merchant",
-                    style="Form.TRadiobutton").pack(side="left", padx=(0, 20))
+                        style="Form.TRadiobutton").pack(side="left", padx=(0, 20))
         ttk.Radiobutton(radio_frame, text="管理员", variable=self.user_type_var, value="admin",
-                    style="Form.TRadiobutton").pack(side="left")
+                        style="Form.TRadiobutton").pack(side="left")
 
         # 按钮区域 - 修改为居中对齐
         button_frame = ttk.Frame(card_frame)
@@ -109,12 +109,12 @@ class ShoppingGUI:
         buttons_container = ttk.Frame(button_frame)
         buttons_container.pack(expand=True)
 
-        ttk.Button(buttons_container, text="登录", command=self.login, style="Form.TButton").pack(side="left", padx=(0, 15))
+        ttk.Button(buttons_container, text="登录", command=self.login, style="Form.TButton").pack(side="left",
+                                                                                                  padx=(0, 15))
         ttk.Button(buttons_container, text="注册", command=self.show_register, style="Form.TButton").pack(side="left")
 
         # 绑定回车键
         self.root.bind('<Return>', lambda event: self.login())
-
 
     def show_register(self):
         """显示注册界面"""
@@ -1060,8 +1060,10 @@ class ShoppingGUI:
 
         ttk.Button(left_frame, text="审核申请", style="Nav.TButton",
                    command=self.review_applications).pack(side="left", padx=10, pady=15)
+        ttk.Button(left_frame, text="用户管理", style="Nav.TButton",
+                   command=self.manage_users).pack(side="left", padx=10, pady=15)
         ttk.Button(left_frame, text="商品管理", style="Nav.TButton",
-                   command=self.admin_search_products).pack(side="left", padx=10, pady=15)
+                   command=self.manage_products).pack(side="left", padx=10, pady=15)
         ttk.Button(left_frame, text="评价管理", style="Nav.TButton",
                    command=self.view_all_reviews).pack(side="left", padx=10, pady=15)
 
@@ -1167,8 +1169,66 @@ class ShoppingGUI:
         else:
             messagebox.showerror("错误", "操作失败！")
 
-    def admin_search_products(self):
-        """管理员搜索商品"""
+    def manage_users(self):
+        """管理用户"""
+        self.clear_content()
+
+        # 标题
+        header_frame = ttk.Frame(self.content_frame)
+        header_frame.pack(fill="x", pady=(0, 20))
+        ttk.Label(header_frame, text="用户管理", style="Title.TLabel").pack(side="left")
+
+        # 创建表格
+        tree_frame = ttk.Frame(self.content_frame)
+        tree_frame.pack(fill="both", expand=True)
+
+        tree = ttk.Treeview(tree_frame, columns=("username", "email", "type"), show="headings", height=15)
+        tree.heading("username", text="用户名")
+        tree.heading("email", text="邮箱/联系方式")
+        tree.heading("type", text="用户类型")
+
+        tree.column("username", width=200)
+        tree.column("email", width=250)
+        tree.column("type", width=100, anchor="center")
+
+        # 添加用户数据
+        users = self.system.get_all_users()
+        for user in users:
+            tree.insert("", "end", values=(user["username"], user["email"], user["type"]),
+                        tags=(user["username"], user["type"]))
+
+        tree.pack(side="left", fill="both", expand=True)
+
+        # 滚动条
+        scrollbar = ttk.Scrollbar(tree_frame, orient="vertical", command=tree.yview)
+        tree.configure(yscrollcommand=scrollbar.set)
+        scrollbar.pack(side="right", fill="y")
+
+        # 操作按钮
+        button_frame = ttk.Frame(self.content_frame)
+        button_frame.pack(fill="x", pady=20)
+
+        ttk.Button(button_frame, text="删除选中用户", command=lambda: self.delete_user(tree)).pack(side="left", padx=10)
+        ttk.Button(button_frame, text="刷新", command=self.manage_users).pack(side="left", padx=10)
+
+    def delete_user(self, tree):
+        """删除用户"""
+        selection = tree.selection()
+        if not selection:
+            messagebox.showwarning("警告", "请选择要删除的用户！")
+            return
+
+        username, user_type = tree.item(selection[0])["tags"]
+
+        if messagebox.askyesno("确认", f"确定要删除{user_type} {username} 吗？"):
+            if self.system.delete_user(username, user_type):
+                messagebox.showinfo("成功", "用户已删除！")
+                self.manage_users()
+            else:
+                messagebox.showerror("错误", "删除用户失败！")
+
+    def manage_products(self):
+        """管理商品（包括下架功能）"""
         self.clear_content()
 
         # 标题
@@ -1178,70 +1238,102 @@ class ShoppingGUI:
 
         # 搜索区域
         search_frame = ttk.Frame(self.content_frame)
-        search_frame.pack(fill="x", pady=(0, 30))
+        search_frame.pack(fill="x", pady=(0, 20))
 
         ttk.Label(search_frame, text="关键词:", font=self.font_medium).pack(side="left")
-        search_entry = ttk.Entry(search_frame, width=40, font=self.font_medium)
-        search_entry.pack(side="left", padx=10)
+        self.search_entry = ttk.Entry(search_frame, width=30, font=self.font_medium)  # 改为实例变量
+        self.search_entry.pack(side="left", padx=10)
 
         def perform_search():
-            query = search_entry.get()
-            results = self.system.search_products(query)
-            display_results(results)
+            query = self.search_entry.get().lower()  # 通过self访问
+            self.display_products(query)
 
-        ttk.Button(search_frame, text="搜索", command=perform_search, style="Form.TButton").pack(side="left", padx=15)
+        ttk.Button(search_frame, text="搜索", command=perform_search, style="Form.TButton").pack(side="left", padx=10)
 
-        # 结果显示区域
-        self.results_container = ttk.Frame(self.content_frame)
-        self.results_container.pack(fill="both", expand=True)
+        # 商品显示区域
+        self.products_container = ttk.Frame(self.content_frame)
+        self.products_container.pack(fill="both", expand=True)
 
-        def display_results(products):
-            # 清空之前的结果
-            for widget in self.results_container.winfo_children():
-                widget.destroy()
+        self.display_products()
 
-            if not products:
-                ttk.Label(self.results_container, text="未找到相关商品",
-                          font=self.font_medium).pack(pady=80)
-                return
+    def display_products(self, query=""):
+        """显示商品列表"""
+        # 清空之前的内容
+        for widget in self.products_container.winfo_children():
+            widget.destroy()
 
-            # 创建表格
-            tree_frame = ttk.Frame(self.results_container)
-            tree_frame.pack(fill="both", expand=True)
+        # 创建表格
+        tree_frame = ttk.Frame(self.products_container)
+        tree_frame.pack(fill="both", expand=True)
 
-            tree = ttk.Treeview(tree_frame, columns=("name", "price", "category", "merchant", "status"),
-                                show="headings", height=15)
-            tree.heading("name", text="商品名")
-            tree.heading("price", text="价格")
-            tree.heading("category", text="类别")
-            tree.heading("merchant", text="商家")
-            tree.heading("status", text="状态")
+        tree = ttk.Treeview(tree_frame, columns=("id", "name", "price", "category", "merchant", "stock"),
+                            show="headings", height=15)
+        tree.heading("id", text="商品ID")
+        tree.heading("name", text="商品名称")
+        tree.heading("price", text="价格")
+        tree.heading("category", text="类别")
+        tree.heading("merchant", text="商家")
+        tree.heading("stock", text="库存")
 
-            tree.column("name", width=250)
-            tree.column("price", width=120, anchor="center")
-            tree.column("category", width=120, anchor="center")
-            tree.column("merchant", width=150, anchor="center")
-            tree.column("status", width=120, anchor="center")
+        tree.column("id", width=100)
+        tree.column("name", width=200)
+        tree.column("price", width=80, anchor="center")
+        tree.column("category", width=100, anchor="center")
+        tree.column("merchant", width=120)
+        tree.column("stock", width=80, anchor="center")
 
-            for product in products:
-                status = "已上架" if product.get("approved", False) else "待审核"
-                tree.insert("", "end", values=(
-                    product["name"],
-                    f"¥{product['price']}",
-                    product["category"],
-                    product["merchant"],
-                    status
-                ), tags=(product["product_id"],))
+        # 添加商品数据
+        for product_id, product_data in self.system.db.data["products"].items():
+            # 如果有搜索关键词，进行过滤
+            if query:
+                if (query not in product_data["name"].lower() and
+                        query not in product_data["category"].lower() and
+                        query not in product_data["merchant"].lower()):
+                    continue
 
-            tree.pack(side="left", fill="both", expand=True)
+            tree.insert("", "end", values=(
+                product_data["product_id"],
+                product_data["name"],
+                f"¥{product_data['price']}",
+                product_data["category"],
+                product_data["merchant"],
+                product_data["stock"]
+            ), tags=(product_id,))
 
-            # 滚动条
-            scrollbar = ttk.Scrollbar(tree_frame, orient="vertical", command=tree.yview)
-            tree.configure(yscrollcommand=scrollbar.set)
-            scrollbar.pack(side="right", fill="y")
+        tree.pack(side="left", fill="both", expand=True)
 
-        # 绑定回车键
-        search_entry.bind('<Return>', lambda event: perform_search())
+        # 滚动条
+        scrollbar = ttk.Scrollbar(tree_frame, orient="vertical", command=tree.yview)
+        tree.configure(yscrollcommand=scrollbar.set)
+        scrollbar.pack(side="right", fill="y")
+
+        # 操作按钮
+        button_frame = ttk.Frame(self.products_container)
+        button_frame.pack(fill="x", pady=20)
+
+        ttk.Button(button_frame, text="下架选中商品", command=lambda: self.remove_product(tree)).pack(side="left",
+                                                                                                      padx=10)
+        ttk.Button(button_frame, text="刷新",
+                   command=lambda: self.display_products(self.search_entry.get().lower())).pack(
+            side="left", padx=10)
+
+    def remove_product(self, tree):
+        """下架商品"""
+        selection = tree.selection()
+        if not selection:
+            messagebox.showwarning("警告", "请选择要下架的商品！")
+            return
+
+        product_id = tree.item(selection[0])["tags"][0]
+        product_name = tree.item(selection[0])["values"][1]
+
+        if messagebox.askyesno("确认", f"确定要下架商品 {product_name} 吗？"):
+            if self.system.remove_product(product_id):
+                messagebox.showinfo("成功", "商品已下架！")
+                # 重新显示商品列表
+                self.display_products()
+            else:
+                messagebox.showerror("错误", "下架商品失败！")
 
     def view_all_reviews(self):
         """查看所有商品评价"""
